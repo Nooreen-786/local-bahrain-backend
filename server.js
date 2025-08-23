@@ -13,9 +13,9 @@ app.use(express.json());
 
 
 const allowedOrigins = [
-  'http://localhost:3000',        
-  'http://127.0.0.1:5173',       
-  'https://your-deployed-frontend-url.com'
+  'http://localhost:3000',
+  'http://127.0.0.1:5173',
+  'https://local-bahrain-frontend.vercel.app'
 ];
 
 const corsOptions = {
@@ -46,7 +46,7 @@ mongoose.connect(process.env.MONGO_URI, {
   useUnifiedTopology: true
 })
 .then(() => console.log(' MongoDB connected'))
-.catch(err => console.error(' MongoDB connection error:', err));
+.catch(err => console.error('MongoDB connection error:', err));
 
 
 const authRoutes = require('./routes/authRoutes');
@@ -75,5 +75,5 @@ if (process.env.NODE_ENV === 'production') {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(` Server running on http://localhost:${PORT}`);
+  console.log(` Server running on port ${PORT}`);
 });
