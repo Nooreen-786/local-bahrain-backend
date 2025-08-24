@@ -57,15 +57,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/places', placeRoutes);
 app.use('/api/restaurants', restaurantRoutes);
 
-
-if (process.env.NODE_ENV === 'production') {
-  const clientBuildPath = path.join(__dirname, 'client', 'build');
-  app.use(express.static(clientBuildPath));
-
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(clientBuildPath, 'index.html'));
-  });
-} else {
+ {
  
   app.get('/', (req, res) => {
     res.send('API is running...');
