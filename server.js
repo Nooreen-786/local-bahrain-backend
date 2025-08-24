@@ -4,22 +4,19 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
 
+
 dotenv.config();
 
 const app = express();
 
 
-const allowedOrigins = [
-  'http://localhost:3000',
-  'http://127.0.0.1:5173',
-  'http://127.0.0.1:5174',  
-  'https://local-bahrain-frontend.vercel.app'
-];
+const allowedOrigins = process.env.CORS_ALLOWED_ORIGINS
+  ? process.env.CORS_ALLOWED_ORIGINS.split(',')
+  : [];
 
 const corsOptions = {
   origin: function (origin, callback) {
-    if (!origin) return callback(null, true); 
-    if (allowedOrigins.includes(origin)) {
+    if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error(`CORS policy does not allow access from origin: ${origin}`));
@@ -47,22 +44,20 @@ mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
-.then(() => console.log(' MongoDB connected'))
-.catch(err => console.error(' MongoDB connection error:', err));
+  .then(() => console.log(' MongoDB connected'))
+  .catch(err => console.error(' MongoDB connection error:', err));
 
 
 const authRoutes = require('./routes/authRoutes');
 const placeRoutes = require('./routes/placeRoutes');
 const restaurantRoutes = require('./routes/RestaurantRoutes');
 
-
 app.use('/api/auth', authRoutes);
 app.use('/api/places', placeRoutes);
 app.use('/api/restaurants', restaurantRoutes);
 
-
 app.get('/', (req, res) => {
-  res.send(' API is running...');
+  res.send('🌍 API is running...');
 });
 
 
@@ -70,4 +65,3 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(` Server running on port ${PORT}`);
 });
-
